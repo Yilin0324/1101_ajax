@@ -64,7 +64,7 @@ fetch(url,{method:’get’})
 ## jQuery函式庫
 jQuery最早只是重新包裝XMLHttpRequest的使用方法，推出比較容易操作的自訂函式供使用，不過後來也自行加入了延遲的概念，讓非同步的事件可以更容易的進行管理。
 
-CDN：`https://code.jquery.com/`
+CDN：`https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js`
 
 語法：
 ```javascript

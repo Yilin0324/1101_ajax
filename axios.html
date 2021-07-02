@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,30 +8,86 @@
     <title>axios</title>
     <link rel="shortcut icon" href="#" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
-    <!-----引入axios函式庫------->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <style>
+        ul {
+            list-style-type: decimal;
+        }
+
+        li {
+            padding: 5px 10px;
+            margin: 10px 5px;
+            border: 1px solid #eee;
+            box-shadow: 1px 1px 5px grey;
+
+        }
+    </style>
 </head>
+
 <body>
     <h1 class="header">axios</h1>
     <div class="title"></div>
     <h4></h4>
     <ul></ul>
-    
+
 </body>
+
 </html>
 <script>
-/********************************************************
-* 1.api網址  https://kktix.com/events.json
-* 2.發起一個axios請求
-* 3.建立回呼函式(call back function)來處理回應時的各項行為
-* 4.建立錯誤處理
-********************************************************/
+    /********************************************************
+    * 1.api網址  https://kktix.com/events.json
+    * 2.發起一個axios請求
+    * 3.建立回呼函式(call back function)來處理回應時的各項行為
+    * 4.建立錯誤處理
+    ********************************************************/
 
-//發起一個axios請求
+    axios.get('https://kktix.com/events.json')
+        .then(function (response) {
+            console.log(response)
+            render(response.data)
+            //處理回應
+
+        })
+        .catch(function (err) {
+            //error
+
+        })
+
+    //發起一個axios請求
 
 
-//建立回呼函式(call back function)來處理回應時的各項行為
+    //建立回呼函式(call back function)來處理回應時的各項行為
 
 
-//建立錯誤處理
+    //建立錯誤處理
+
+    function render(r) {
+        console.log(r)
+        let title = r.title
+        let th = document.querySelector('.title');
+        th.innerHTML = title
+        console.log(title, th);
+
+        let entry = r.entry;
+        let ul = document.querySelector('ul');
+        let list = "";
+        entry.forEach(function (event, idx) {
+            let el = `<li>${event.title}</li>`;
+            list = list + el;
+
+        })
+        ul.innerHTML = list;
+
+        $("li").hover(
+            function () {
+                $(this).css({ background: 'yellow' })
+            },
+            function () {
+                $(this).css({ background: 'white' })
+            }
+        )
+    }
 
 </script>
