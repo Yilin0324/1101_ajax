@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,14 +8,29 @@
     <title>Fetch</title>
     <link rel="shortcut icon" href="#" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
+    <style>
+        ul {
+            list-style-type: decimal;
+        }
+
+        li {
+            padding: 5px 10px;
+            margin: 10px 5px;
+            border: 1px solid #eee;
+            box-shadow: 1px 1px 5px grey;
+
+        }
+    </style>
 </head>
+
 <body>
     <h1 class="header">Fetch</h1>
     <div class="title"></div>
     <h4></h4>
     <ul></ul>
-    
+
 </body>
+
 </html>
 <script>
     /********************************************************
@@ -32,4 +48,39 @@
 
     //建立錯誤處理
 
-  </script>
+    //建立請求
+    fetch('https://kktix.com/events.json', { method: 'get' })
+        .then(function (response) {
+            return response.json()
+        })
+        .then(function (r) {
+
+            render(r)
+
+        })
+        .catch(function (err) {
+            console.log(err)
+        })
+
+
+
+    function render(r) {
+
+        let title = r.title
+        let th = document.querySelector('.title');
+        th.innerHTML = title
+        console.log(title, th);
+
+        let entry = r.entry;
+        let ul = document.querySelector('ul');
+        let list = "";
+        entry.forEach(function (event, idx) {
+            let el = `<li>${event.title}</li>`;
+            list = list + el;
+
+        })
+
+        ul.innerHTML = list;
+    }
+
+</script>
