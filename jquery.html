@@ -42,14 +42,20 @@
   * 4.建立錯誤處理
   ********************************************************/
 
+
   //利用$.ajax()方法傳送請求並取得回應
-  $.ajax(
-    {
-      url: 'https://kktix.com/events.json',
-      type: 'get',
-      success: (res) => { render(res) },
-    }
-  )
+  /* $.ajax(
+        {
+          url:'https://kktix.com/events.json',
+          type:'get',
+          success:(res)=>{render(res)},
+        }
+      )   
+   */
+  $.get('https://kktix.com/events.json', (res) => {
+    render(res)
+  })
+  
   function render(r) {
     console.log(r)
     let title = r.title
@@ -63,7 +69,7 @@
     entry.forEach(function (event, idx) {
       let el = `<li>${event.title}</li>`;
       list = list + el;
-      
+
     })
 
     ul.innerHTML = list;
