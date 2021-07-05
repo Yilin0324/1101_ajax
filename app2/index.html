@@ -8,12 +8,24 @@
     <link rel="shortcut icon" href="#" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
     <!---匯入要使用的函式庫--->
-
+    <script src="jquery-2.1.4.min.js"></script>
+    <style>
+      table{
+        width: 80%;
+        border-collapse: collapse;
+        margin:auto;
+      }
+      td{
+        padding: 5px 10px;
+        text-align: center;
+        border: 1px solid #ccc;
+      }
+    </style>
 
 </head>
 <body>
   <h1 class="header">學生資料管理系統</h1>
-
+  <table id="students"></table>
   
 </body>
 </html>
@@ -31,10 +43,27 @@
 function create(){
 
 }
-
+query('101')
 //查詢資料的函式
-function query(){
+function query(classNum){
+  $.get("api/query.php",{'classNum':classNum},function(students){
 
+    let stus=JSON.parse(students)
+    console.log(stus)
+    let list='';
+    stus.forEach(el => {
+      list=list+`<tr>
+                  <td>${el.id}</td>
+                  <td>${el.nat_id}</td>
+                  <td>${el.class_num}</td>
+                  <td>${el.name}</td>
+                  <td>${el.dept}</td>
+                 </tr>`;
+
+    });
+
+    $("#students").html(list)
+  })
 }
 
 //編輯資料的函式
