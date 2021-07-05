@@ -25,6 +25,17 @@
       margin:10px auto;
       text-align: center;
       }
+      #newForm{
+      width:50%;
+      padding:20px;
+      border:1px solid #ccc;
+      box-shadow: 1px 1px 5px #ccc;
+      display:none;
+      position: absolute;
+      left:25%;
+      top:40%;
+      background-color: white;
+    }
     </style>
 
 </head>
@@ -44,8 +55,26 @@
     <button onclick="query('110')">一年十班</button>
 
   </div>
+  <button id="newStudent" style="display:block;margin:5px auto;" data-class="101" onclick="newpop()">新增學生</button>
 
   <table id="students"></table>
+  
+  <div id="newForm">
+    <h3>新增學生</h3>
+    <form action="" method="post">
+  
+      <p>姓名:<input type="text" name="name" id="name"></p>
+      <p>身份證字號:<input type="text" name="nat_id" id="nat_id"></p>
+      <p>班級代號:<input type="text" name="class_num" id="class_num"></p>
+      <p>科別:<input type="text" name="dept" id="dept"></p>
+      <p>
+        <input type="button" value="新增" onclick="create()">
+  
+      </p>
+    </form>
+  
+  
+  </div>
   
 </body>
 </html>
@@ -57,10 +86,28 @@
 * 4.是否會有回傳值？回傳值的功用及處理？
 * 5.是否需要更新畫面內容？更新畫面的方法？
 ************************************/
-
+//秀出新增彈出視窗
+function newpop(){
+  $("#newForm").show();
+}
 
 //新增資料的函式
 function create(){
+  let name=$("#name").val();
+  let nat_id=$("#nat_id").val();
+  let class_num=$("#class_num").val();
+  let dept=$("#dept").val();
+
+  $.post('api/insert.php',{name,nat_id,class_num,dept},(res)=>{
+    console.log(res)
+    if(res=='1'){
+      alert("新增成功");
+    }else{
+      alert("新增失敗")
+    }
+    $("#newForm").hide();
+    query(class_num.substr(0,3))
+  })
 
 }
 query('101')
@@ -76,6 +123,8 @@ function query(classNum){
 //後端回傳的資料如果是json格式,則需先解析成為js 物件後
 //再由js製作所需的html標籤內容，再放到對應的html標籤中
 function query(classNum){
+  $("#newStudent").data('class',classNum);
+  console.log(classNum,$("#newStudent").data('class'))
   $.get("api/query.php",{'classNum':classNum},function(students){
     let stus=JSON.parse(students)
     let list='';
