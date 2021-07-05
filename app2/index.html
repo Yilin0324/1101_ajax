@@ -1,44 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>學生資料管理系統</title>
-    <link rel="shortcut icon" href="#" type="image/x-icon">
-    <link rel="stylesheet" href="style.css">
-    <!---匯入要使用的函式庫--->
-    <script src="jquery-2.1.4.min.js"></script>
-    <style>
-      table{
-        width: 80%;
-        border-collapse: collapse;
-        margin:auto;
-      }
-      td{
-        padding: 5px 10px;
-        text-align: center;
-        border: 1px solid #ccc;
-      }
-      .btn-list{
-      width:80%;
-      margin:10px auto;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>學生資料管理系統</title>
+  <link rel="shortcut icon" href="#" type="image/x-icon">
+  <link rel="stylesheet" href="style.css">
+  <!---匯入要使用的函式庫--->
+  <script src="jquery-2.1.4.min.js"></script>
+  <style>
+    table {
+      width: 80%;
+      border-collapse: collapse;
+      margin: auto;
+    }
+
+    td {
+      padding: 5px 10px;
       text-align: center;
-      }
-      #newForm{
-      width:50%;
-      padding:20px;
-      border:1px solid #ccc;
+      border: 1px solid #ccc;
+    }
+
+    .btn-list {
+      width: 80%;
+      margin: 10px auto;
+      text-align: center;
+    }
+
+    #newForm,
+    #editForm {
+      width: 50%;
+      padding: 20px;
+      border: 1px solid #ccc;
       box-shadow: 1px 1px 5px #ccc;
-      display:none;
+      display: none;
       position: absolute;
-      left:25%;
-      top:40%;
+      left: 25%;
+      top: 40%;
       background-color: white;
     }
-    </style>
+  </style>
 
 </head>
+
 <body>
   <h1 class="header">學生資料管理系統</h1>
   <div class="btn-list">
@@ -58,110 +64,160 @@
   <button id="newStudent" style="display:block;margin:5px auto;" data-class="101" onclick="newpop()">新增學生</button>
 
   <table id="students"></table>
-  
+
   <div id="newForm">
     <h3>新增學生</h3>
     <form action="" method="post">
-  
+
       <p>姓名:<input type="text" name="name" id="name"></p>
       <p>身份證字號:<input type="text" name="nat_id" id="nat_id"></p>
       <p>班級代號:<input type="text" name="class_num" id="class_num"></p>
       <p>科別:<input type="text" name="dept" id="dept"></p>
       <p>
         <input type="button" value="新增" onclick="create()">
-  
+
       </p>
     </form>
-  
-  
+
   </div>
-  
+
+  <div id="editForm">
+    <h3>編輯學生資料</h3>
+    <form action="" method="post">
+
+      <p>id:<span id="edit_id"></span></p>
+      <p>姓名:<input type="text" name="name" id="edit_name"></p>
+      <p>身份證字號:<input type="text" name="nat_id" id="edit_nat_id"></p>
+      <p>班級代號:<input type="text" name="class_num" id="edit_class_num"></p>
+      <p>科別:<input type="text" name="dept" id="edit_dept"></p>
+      <p>
+        <input type="button" value="修改" onclick="update()">
+      </p>
+    </form>
+  </div>
+
 </body>
+
 </html>
 <script>
-/************************************
-* 1.考慮觸發行為的事件
-* 2.建立監聽行為
-* 3.考慮是否需要代入參數
-* 4.是否會有回傳值？回傳值的功用及處理？
-* 5.是否需要更新畫面內容？更新畫面的方法？
-************************************/
-//秀出新增彈出視窗
-function newpop(){
-  $("#newForm").show();
-}
+  /************************************
+  * 1.考慮觸發行為的事件
+  * 2.建立監聽行為
+  * 3.考慮是否需要代入參數
+  * 4.是否會有回傳值？回傳值的功用及處理？
+  * 5.是否需要更新畫面內容？更新畫面的方法？
+  ************************************/
+  //秀出新增彈出視窗
+  function newpop() {
+    $("#newForm").show();
+  }
 
-//新增資料的函式
-function create(){
-  let name=$("#name").val();
-  let nat_id=$("#nat_id").val();
-  let class_num=$("#class_num").val();
-  let dept=$("#dept").val();
+  //新增資料的函式
+  function create() {
+    let name = $("#name").val();
+    let nat_id = $("#nat_id").val();
+    let class_num = $("#class_num").val();
+    let dept = $("#dept").val();
 
-  $.post('api/insert.php',{name,nat_id,class_num,dept},(res)=>{
-    console.log(res)
-    if(res=='1'){
-      alert("新增成功");
-    }else{
-      alert("新增失敗")
-    }
-    $("#newForm").hide();
-    query(class_num.substr(0,3))
-  })
+    $.post('api/insert.php', { name, nat_id, class_num, dept }, (res) => {
+      console.log(res)
+      if (res == '1') {
+        alert("新增成功");
+      } else {
+        alert("新增失敗")
+      }
+      $("#newForm").hide();
+      query(class_num.substr(0, 3))
+    })
 
-}
-query('101')
-//查詢資料的函式
-/*
-//後端回傳的資料如果是HTML格式,則直接放到對應的html標籤中
-function query(classNum){
-  $.get("api/query.php",{'classNum':classNum},function(students){  
-    $("#students").html(students)
-  })
-} */
+  }
+  query('101')
+  //查詢資料的函式
+  /*
+  //後端回傳的資料如果是HTML格式,則直接放到對應的html標籤中
+  function query(classNum){
+    $.get("api/query.php",{'classNum':classNum},function(students){  
+      $("#students").html(students)
+    })
+  } */
 
-//後端回傳的資料如果是json格式,則需先解析成為js 物件後
-//再由js製作所需的html標籤內容，再放到對應的html標籤中
-function query(classNum){
-  $("#newStudent").data('class',classNum);
-  console.log(classNum,$("#newStudent").data('class'))
-  $.get("api/query.php",{'classNum':classNum},function(students){
-    let stus=JSON.parse(students)
-    let list='';
-    stus.forEach(el => {
-      list=list+`<tr>
+  //後端回傳的資料如果是json格式,則需先解析成為js 物件後
+  //再由js製作所需的html標籤內容，再放到對應的html標籤中
+  function query(classNum) {
+    $("#newStudent").data('class', classNum);
+    console.log(classNum, $("#newStudent").data('class'))
+    $.get("api/query.php", { 'classNum': classNum }, function (students) {
+      let stus = JSON.parse(students)
+      let list = '';
+      stus.forEach(el => {
+        list = list + `<tr>
                   <td class='id-num'>${el.id}</td>
                   <td>${el.nat_id}</td>
                   <td>${el.class_num}</td>
                   <td>${el.name}</td>
                   <td>${el.dept}</td>
                   <td>
-                      <button onclick="update(${el.id})">編輯</button>
+                      <button onclick="find(${el.id})">編輯</button>
                       <button onclick="del(${el.id})">刪除</button>
                   </td>
                  </tr>`;
-    });
+      });
 
-    $("#students").html(list)
-    
-  })
-}
+      $("#students").html(list)
 
-//編輯資料的函式
-function update(id){
+    })
+  }
 
-}
 
-//刪除資料的函式
-function del(id){
-  $.post("api/delete.php",{id},(res)=>{
-      if(res=='1'){
+  function find(id) {
+    $.get("api/query_one.php", { id }, function (stu) {
+      let student = JSON.parse(stu)
+      $("#edit_id").val(student.id)
+      $("#edit_name").val(student.name)
+      $("#edit_nat_id").val(student.nat_id)
+      $("#edit_class_num").val(student.class_num)
+      $("#edit_dept").val(student.dept)
+      $("#editForm").show()
+    })
+  }
+
+  //編輯資料的函式
+  function update() {
+    let name = $("#edit_name").val();
+    let nat_id = $("#edit_nat_id").val();
+    let class_num = $("#edit_class_num").val();
+    let dept = $("#edit_dept").val();
+    let id = $("#edit_id").val();
+
+    $.post("api/update.php",
+      {
+        name,
+        nat_id,
+        class_num,
+        dept,
+        id
+      },
+      (res) => {
+        console.log(res);
+        if (res == '1') {
+          alert("修改成功");
+        } else {
+          alert("修改失敗")
+        }
+        $("#editForm").hide();
+        query(class_num.substr(0, 3))
+      })
+  }
+  //刪除資料的函式
+  function del(id) {
+    $.post("api/delete.php", { id }, (res) => {
+      if (res == '1') {
         alert('刪除成功')
-      }else{
+      } else {
         alert('刪除失敗')
       }
 
       query($("#newStudent").data('class'))
-  })
-}
+    })
+  }
 </script>
