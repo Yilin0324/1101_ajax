@@ -43,7 +43,11 @@ class DB{
         }
 
         //echo $sql;
+        //控制回傳的資料只有欄位名稱
         return $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+        
+        //預設回傳的資料同時有索引值及欄位名稱
+        //return $this->pdo->query($sql)->fetchAll();
 
     }
 
