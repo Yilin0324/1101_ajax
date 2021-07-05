@@ -45,20 +45,19 @@ function create(){
 }
 query('101')
 //查詢資料的函式
-/* function query(classNum){
+/*
+//後端回傳的資料如果是HTML格式,則直接放到對應的html標籤中
+function query(classNum){
   $.get("api/query.php",{'classNum':classNum},function(students){  
-    console.log(students.length);
-    console.log(students) 
     $("#students").html(students)
   })
 } */
 
+//後端回傳的資料如果是json格式,則需先解析成為js 物件後
+//再由js製作所需的html標籤內容，再放到對應的html標籤中
 function query(classNum){
   $.get("api/query.php",{'classNum':classNum},function(students){
-    console.log(students.length);
     let stus=JSON.parse(students)
-    console.log(stus)
-    console.log(stus.str_length)
     let list='';
     stus.forEach(el => {
       list=list+`<tr>
