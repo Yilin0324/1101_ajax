@@ -20,11 +20,31 @@
         text-align: center;
         border: 1px solid #ccc;
       }
+      .btn-list{
+      width:80%;
+      margin:10px auto;
+      text-align: center;
+      }
     </style>
 
 </head>
 <body>
   <h1 class="header">學生資料管理系統</h1>
+  <div class="btn-list">
+
+    <button onclick="query('101')">一年一班</button>
+    <button onclick="query('102')">一年二班</button>
+    <button onclick="query('103')">一年三班</button>
+    <button onclick="query('104')">一年四班</button>
+    <button onclick="query('105')">一年五班</button>
+    <button onclick="query('106')">一年六班</button>
+    <button onclick="query('107')">一年七班</button>
+    <button onclick="query('108')">一年八班</button>
+    <button onclick="query('109')">一年九班</button>
+    <button onclick="query('110')">一年十班</button>
+
+  </div>
+
   <table id="students"></table>
   
 </body>
