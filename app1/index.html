@@ -54,7 +54,7 @@
 
  $("a").on("click",function(){
     let url=`results/${$(this).attr('id')}.html`;
-    $.get(url,(res)=>{   
+    $.get('https://www.taiwanlottery.com.tw/lotto/superlotto638/history.aspx',(res)=>{   
       $('#content').html(res)
     })
  })
